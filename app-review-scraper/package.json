@@ -2,9 +2,10 @@
   "name": "app-review-scraper",
   "type": "module",
   "dependencies": {
-    "app-store-scraper-reviews": "^1.2.1"
+    "app-store-scraper-reviews": "^1.0.1"
   },
   "devDependencies": {
+    "@types/node": "^24.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.4.5"
   }

@@ -1,10 +1,22 @@
 import json
 import subprocess
 
-# Sample list of apps with appIds (replace with your own search logic)
+
+# Update to reading in the saved data and constructing the json structure
+# BUT TRY IT WITH THIS STRUCTURE TO TEST IT FIRST
 apps = [
-    {"appId": "553834731", "name": "Example Game 1"},
-    {"appId": "123456789", "name": "Example Game 2"}
+  {
+    "appId": "1456710300",
+    "name": "Among Us!"
+  },
+  {
+    "appId": "1463372439",
+    "name": "Mario Kart Tour"
+  },
+  {
+    "appId": "1483058899",
+    "name": "Call of Duty®: Mobile"
+  }
 ]
 
 with open("data/app_ids.json", "w") as f:
