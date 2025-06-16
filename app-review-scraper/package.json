@@ -2,6 +2,7 @@
   "name": "app-review-scraper",
   "type": "module",
   "dependencies": {
+    "app-store-scraper": "^0.18.0",
     "app-store-scraper-reviews": "^1.0.1"
   },
   "devDependencies": {

@@ -1,28 +1,53 @@
-import { getReviews } from "app-store-scraper-reviews";
-import * as fs from "fs";
+// @ts-ignore
+import store from 'app-store-scraper';
+import * as fs from 'fs/promises';
 
-type Game = { appId: string; name: string };
+type Input = {
+  appId: string;
+  country?: string;
+};
 
-async function run() {
-  const games: Game[] = JSON.parse(await fs.promises.readFile("data/app_ids.json", "utf-8"));
+async function fetchAllReviews({ appId, country = 'us' }: Input) {
+  let page = 1;
+  const allReviews: any[] = [];
 
-  for (const game of games) {
+  while (true) {
     try {
-      const reviews = await getReviews({
-        appId: game.appId,
-        country: "us",
-        numberOfReviews: 1000
+      const reviews = await store.reviews({
+        id: appId,
+        country,
+        page,
+        sort: store.sort.NEWEST
       });
 
-      if (!Array.isArray(reviews)) throw new Error("Invalid response");
+      if (!reviews || reviews.length === 0) {
+        console.log(`✅ No more reviews on page ${page}.`);
+        break;
+      }
 
-      const outPath = `data/reviews_${game.appId}.json`;
-      await fs.promises.writeFile(outPath, JSON.stringify(reviews, null, 2));
-      console.log(`✅ Saved ${reviews.length} reviews for ${game.name}`);
+      console.log(`📄 Fetched ${reviews.length} reviews on page ${page}`);
+      allReviews.push(...reviews);
+      page++;
+
+      // Delay to avoid being throttled
+      await new Promise(res => setTimeout(res, 1000));
     } catch (err: any) {
-       console.error(`❌ Error scraping ${game.name}:`, err);
+      console.error(`❌ Error on page ${page}:`, err.message || err);
+      break;
     }
   }
+
+  const outPath = `data/reviews_${appId}.json`;
+  await fs.writeFile(outPath, JSON.stringify(allReviews, null, 2));
+  console.log(`💾 Saved ${allReviews.length} reviews to ${outPath}`);
 }
 
-run();
+// If run directly (i.e., not imported), get args from command line
+const [, , appId, countryArg] = process.argv;
+
+if (!appId) {
+  console.error('❌ Please provide an app ID.');
+  process.exit(1);
+}
+
+fetchAllReviews({ appId, country: countryArg || 'us' });
