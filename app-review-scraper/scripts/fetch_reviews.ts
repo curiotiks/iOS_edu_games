@@ -1,3 +1,4 @@
+// Using package from https://github.com/facundoolano/app-store-scraper
 // @ts-ignore
 import store from 'app-store-scraper';
 import * as fs from 'fs/promises';
