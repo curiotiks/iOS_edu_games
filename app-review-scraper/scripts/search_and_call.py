@@ -17,13 +17,11 @@ apps = [
   }
 ]
 
-app_id = "1456710300"  # Example app ID to test
-
-with open("data/app_ids.json", "w") as f:
-    json.dump(apps, f)
+# app_id = "1456710300"  # Example app ID to test
 
 # Now call the TypeScript review scraper
-result = subprocess.run(["npx", "ts-node", "scripts/fetch_reviews.ts", app_id], capture_output=True, text=True)
+print("Starting subprocess")
+# result = subprocess.run(["npx", "ts-node", "scripts/fetch_reviews.ts", app_id], capture_output=True, text=True)
 
-print("STDOUT:\n", result.stdout)
-print("STDERR:\n", result.stderr)
+# print("STDOUT:\n", result.stdout)
+# print("STDERR:\n", result.stderr)

@@ -8,10 +8,13 @@ type Input = {
   country?: string;
 };
 
+
 async function fetchAllReviews({ appId, country = 'us' }: Input) {
+  console.log('Fetching reviews for app:', appId);
   let page = 1;
   const allReviews: any[] = [];
 
+  console.log(`🌍 Starting loop...`);
   while (true) {
     try {
       const reviews = await store.reviews({
@@ -38,7 +41,7 @@ async function fetchAllReviews({ appId, country = 'us' }: Input) {
     }
   }
 
-  const outPath = `data/reviews_${appId}.json`;
+  const outPath = `app-review-scraper/data/reviews_${appId}.json`;
   await fs.writeFile(outPath, JSON.stringify(allReviews, null, 2));
   console.log(`💾 Saved ${allReviews.length} reviews to ${outPath}`);
 }
